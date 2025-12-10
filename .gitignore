@@ -1,0 +1,59 @@
+# -------------------------
+# Python
+# -------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+
+# Virtual environments
+.env/
+.venv/
+venv/
+ENV/
+
+# Jupyter / Notebooks
+.ipynb_checkpoints/
+
+# Build / Packaging
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+# -------------------------
+# Google ADK
+# -------------------------
+# Session state caches
+adk_sessions/
+adk_cache/
+.cache/
+
+# ADK compiled / temporary files
+*.adk
+*.jsonl
+
+# -------------------------
+# API Keys & Secrets
+# -------------------------
+.env
+.env.local
+.env.prod
+*.env
+
+# Google API Auth
+token.json
+credentials.json
+client_secret.json
+
+# -------------------------
+# OS / Editor junk files
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# VS Code settings
+.vscode/
