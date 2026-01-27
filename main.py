@@ -25,7 +25,12 @@ if not api_key:
 
 genai.configure(api_key=api_key)
 
-APP_NAME = "truck_routing_demo"
+# Quick fix: ADK may load agents from a top-level package named 'agents'.
+# To avoid app-name mismatch errors during development, set app name
+# to 'agents' so the session service and runner agree. For a cleaner
+# fix, rename the local `agents` package to avoid colliding with the
+# installed `google.adk.agents` package.
+APP_NAME = "agents"
 USER_ID = "dispatcher_01"
 SESSION_ID = "demo_session_01"
 
@@ -43,7 +48,9 @@ route_workflow_agent = SequentialAgent(
 )
 
 session_service = InMemorySessionService()
-session_service.create_session(
+# Use the synchronous helper to avoid awaiting the coroutine in a
+# synchronous script context.
+session_service.create_session_sync(
     app_name=APP_NAME, user_id=USER_ID, session_id=SESSION_ID
 )
 runner = Runner(
@@ -71,7 +78,11 @@ def call_agent(query: str):
     print(final_text)
 
     # Also show fairness JSON from session if you want
-    state = session_service.get_session(APP_NAME, USER_ID, SESSION_ID).state
+    # Use the synchronous get_session to retrieve session state.
+    sess = session_service.get_session_sync(
+        app_name=APP_NAME, user_id=USER_ID, session_id=SESSION_ID
+    )
+    state = sess.state if sess is not None else {}
     fairness_json = state.get("fairness_report")
     if fairness_json:
         print("\n=== Fairness Report JSON ===")
